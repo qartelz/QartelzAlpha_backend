@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from api.models import User,Opstmt,Assets,Oca, Ratio, Wctl, Ff, Kfi
 from rest_framework import viewsets
-
+from rest_framework.views import APIView
 from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer, OpstmtSerializer, AssetsSerializer, OcaSerializer, RatioSerializer,WctlSerializer,FfSerializer,KfiSerializer
 
 
@@ -229,12 +229,107 @@ class SaveKfiView(generics.CreateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-class GetHomeData(generics.CreateAPIView):
+ 
+class HomeView(APIView):
+    # permission_classes = [IsAuthenticated]
+# user_id=request.user.id,
     def get(self, request):
-        user_id = request.GET.get('user_id')
-        if user_id:
-            data = Opstmt.objects.filter(user_id=user_id).values()
-            return JsonResponse(list(data), safe=False)
-        else:
-            return JsonResponse({'error': 'User ID not provided'}, status=400)
+         
+       
+                
+        specific_cell_ids = ['B7_11', 'C7_11', 'D7_11', 'E7_11', 'F7_11', 'G7_11', 'H7_11', 'I7_11']
+        data = Kfi.objects.filter( cell_id__in=specific_cell_ids)
+        serializer = KfiSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Opstmt.objects.all()
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashassetView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Assets.objects.all()
+        serializer = AssetsSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashocaView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Oca.objects.all()
+        serializer =OcaSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashratioView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Ratio.objects.all()
+        serializer = RatioSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashWctlView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Wctl.objects.all()
+        serializer = WctlSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DashffView(APIView):
+    def get(self, request):
+        # data = Kfi.objects.all()  # Get all objects
+        # data = Kfi.objects.order_by('-id')[:10] 
+        data = Ff.objects.all()
+        serializer =FfSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class DatavisualView(APIView):
+    queryset = Opstmt.objects.all()
+    serializer_class = OpstmtSerializer
+    def get(self, request,*args, **kwargs):
+        
+        specific_cell_ids = ['C1_10', 'D1_10', 'E1_10', 'F1_10']
+
+        data = Opstmt.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DatavisualView1(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C1_35', 'D1_35', 'E1_35', 'F1_35']
+        data = Opstmt.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DatavisualView2(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C1_37', 'D1_37', 'E1_37', 'F1_37']
+        data = Opstmt.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DatavisualView3(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C1_38', 'D1_38', 'E1_38', 'F1_38']
+        data = Opstmt.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DatavisualView4(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C1_42', 'D1_42', 'E1_42', 'F1_42']
+        data = Opstmt.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = OpstmtSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class DatavisualView5(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C4_37', 'D4_37', 'E4_37', 'F4_37']
+        data = Ratio.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = RatioSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class DatavisualView6(APIView):
+    def get(self, request):
+        specific_cell_ids = ['C7_10', 'D7_10', 'E7_10', 'F7_10']
+        data = Kfi.objects.filter( cell_id__in=specific_cell_ids,user_id='abin@abin.com')
+        serializer = KfiSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
